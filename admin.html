@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login — Narayan e-Gurukul Admin</title>
+    <meta name="description" content="Staff login portal for Narayan e-Gurukul admin dashboard.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+
+/* ══ TOP INFO BAR ══ */
+.top-bar{
+    width:100%;flex-shrink:0;
+    background:linear-gradient(90deg,#c2185b,#e91e63,#f06292);
+    height:38px;display:flex;align-items:center;
+    padding:0 5%;justify-content:space-between;gap:12px;
+}
+.top-bar-left{display:flex;align-items:center;gap:18px;overflow:hidden;flex:1}
+.top-bar-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:500;color:rgba(255,255,255,0.95);white-space:nowrap}
+.top-bar-item i{font-size:0.8rem;color:rgba(255,255,255,0.85)}
+.top-bar-item a{color:rgba(255,255,255,0.95)}
+.top-bar-item a:hover{color:#fff;text-decoration:underline}
+.top-bar-sep{width:1px;height:14px;background:rgba(255,255,255,0.3);flex-shrink:0}
+.top-bar-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.top-bar-btn{background:#fff;color:#c2185b;border:none;border-radius:4px;padding:4px 14px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;text-decoration:none;display:inline-block;transition:background .2s}
+.top-bar-btn:hover{background:#fce4ec}
+.top-bar-btn.outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5)}
+.top-bar-btn.outline:hover{background:rgba(255,255,255,0.15)}
+
+/* ══ SPLIT PAGE ══ */
+.page{display:flex;flex:1;min-height:calc(100vh - 38px)}
+
+/* ══ LEFT PANEL ══ */
+.left-panel{
+    flex:1;
+    background:linear-gradient(135deg,#1565c0 0%,#1976d2 40%,#42a5f5 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px 40px;position:relative;overflow:hidden;
+}
+/* Decorative circles */
+.left-panel::before{content:'';position:absolute;width:500px;height:500px;background:rgba(255,255,255,0.04);border-radius:50%;top:-150px;left:-150px}
+.left-panel::after{content:'';position:absolute;width:350px;height:350px;background:rgba(255,255,255,0.04);border-radius:50%;bottom:-100px;right:-100px}
+/* Diagonal stripes */
+.left-bg{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 80px)}
+
+.left-content{position:relative;z-index:1;text-align:center;width:100%}
+
+/* Brand */
+.brand{margin-bottom:36px}
+.brand-title{font-size:2rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-0.5px;margin-bottom:4px}
+.brand-title span{color:#81d4fa}
+.brand-sub{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:2px}
+.brand-badge{display:inline-block;background:#ef5350;color:#fff;font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;margin-top:10px}
+
+/* Network illustration */
+.net-grid{width:300px;height:260px;position:relative;margin:0 auto 32px}
+.net-node{
+    position:absolute;
+    width:54px;height:54px;
+    background:rgba(255,255,255,0.15);
+    border:2px solid rgba(255,255,255,0.35);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;color:#fff;
+    animation:nodePulse 3s ease-in-out infinite alternate;
+}
+.net-node:nth-child(1){top:0;left:50%;transform:translateX(-50%);animation-delay:0s}
+.net-node:nth-child(2){top:50px;left:10px;animation-delay:.3s}
+.net-node:nth-child(3){top:50px;right:10px;animation-delay:.6s}
+.net-node:nth-child(4){top:120px;left:0;animation-delay:.9s}
+.net-node:nth-child(5){top:120px;right:0;animation-delay:1.2s}
+.net-node:nth-child(6){top:120px;left:50%;transform:translateX(-50%);animation-delay:1.5s;background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.6)}
+.net-node:nth-child(7){top:190px;left:20px;animation-delay:1.8s}
+.net-node:nth-child(8){top:190px;right:20px;animation-delay:2.1s}
+.net-node:nth-child(9){top:190px;left:50%;transform:translateX(-50%);animation-delay:2.4s}
+@keyframes nodePulse{from{transform:scale(1) translateX(var(--tx,0));opacity:.7}to{transform:scale(1.08) translateX(var(--tx,0));opacity:1}}
+/* Lines between nodes */
+.net-lines{position:absolute;inset:0;z-index:-1}
+
+.admin-tagline{color:rgba(255,255,255,0.9);font-size:0.92rem;font-weight:500;line-height:1.6;max-width:260px;margin:0 auto}
+.admin-tagline strong{color:#fff;font-weight:800}
+
+/* ══ RIGHT PANEL ══ */
+.right-panel{
+    width:440px;min-width:340px;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px 36px;
+    box-shadow:-6px 0 32px rgba(0,0,0,0.08);
+    overflow-y:auto;
+}
+.login-box{width:100%;max-width:340px}
+
+/* Alert banner */
+.alert-bar{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-size:0.82rem;font-weight:600;color:#64748b;
+    margin-bottom:20px;
+}
+.alert-bell{
+    position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:#eff6ff;border-radius:50%;
+    font-size:1.1rem;color:#2563eb;
+}
+.alert-dot{
+    position:absolute;top:2px;right:2px;
+    width:14px;height:14px;background:#ef4444;
+    border-radius:50%;border:2px solid #fff;
+    font-size:0.55rem;font-weight:800;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+}
+
+/* Title */
+.login-title{font-size:1.45rem;font-weight:800;color:#0f172a;text-align:center;margin-bottom:24px}
+
+/* Form fields */
+.field{margin-bottom:14px}
+.field-wrap{
+    display:flex;align-items:center;
+    border:1.5px solid #cbd5e1;
+    border-radius:8px;background:#f8fafc;overflow:hidden;
+    transition:border-color .2s,box-shadow .2s;
+}
+.field-wrap:focus-within{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+.field-icon{
+    width:44px;height:48px;
+    display:flex;align-items:center;justify-content:center;
+    color:#94a3b8;font-size:1.1rem;flex-shrink:0;
+    border-right:1.5px solid #e2e8f0;
+}
+.field-wrap:focus-within .field-icon{color:#2563eb}
+.field-wrap input{
+    flex:1;padding:12px 14px;border:none;outline:none;
+    font-family:'Outfit',sans-serif;font-size:0.9rem;color:#0f172a;background:transparent;
+}
+.field-wrap input::placeholder{color:#94a3b8}
+.field-eye{width:44px;height:48px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:1rem;cursor:pointer;flex-shrink:0;background:transparent;border:none}
+.field-eye:hover{color:#2563eb}
+
+/* Login button */
+.btn-login{
+    width:100%;background:linear-gradient(90deg,#1976d2,#2563eb);color:#fff;
+    border:none;padding:13px;border-radius:8px;
+    font-size:0.95rem;font-weight:700;cursor:pointer;letter-spacing:.5px;
+    font-family:'Outfit',sans-serif;transition:all .2s;margin-top:8px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-login:hover{background:linear-gradient(90deg,#1565c0,#1d4ed8);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.3)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Forgot */
+.forgot-row{text-align:center;margin-top:10px}
+.forgot{font-size:0.84rem;color:#2563eb;font-weight:700}
+.forgot:hover{text-decoration:underline}
+
+/* Error */
+.error-msg{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:0.82rem;color:#dc2626;font-weight:600;margin-bottom:12px;display:none;align-items:center;gap:8px}
+.error-msg.show{display:flex}
+
+/* Help section */
+.help-section{
+    margin-top:24px;padding-top:20px;
+    border-top:1px solid #f1f5f9;
+    text-align:center;
+}
+.help-section p{font-size:0.8rem;color:#64748b;font-weight:600;margin-bottom:6px}
+.help-section a{font-size:0.8rem;color:#2563eb;font-weight:600;display:block;margin-bottom:3px}
+.help-section a:hover{text-decoration:underline}
+
+/* Social icons */
+.social-row{display:flex;justify-content:center;gap:10px;margin-top:16px}
+.social-icon{
+    width:32px;height:32px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;color:#fff;transition:all .2s;
+}
+.si-fb{background:#1877f2}.si-fb:hover{background:#1565c0}
+.si-li{background:#0a66c2}.si-li:hover{background:#084482}
+.si-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}.si-ig:hover{opacity:.85}
+.si-yt{background:#ff0000}.si-yt:hover{background:#cc0000}
+
+/* Back link */
+.back-link{display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.8rem;color:#64748b;font-weight:600;margin-bottom:24px;transition:color .2s}
+.back-link:hover{color:#2563eb}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:768px){
+    .page{flex-direction:column;min-height:auto}
+    .left-panel{flex:none;padding:24px 20px}
+    .net-grid{display:none}
+    .admin-tagline{display:none}
+    .brand{margin-bottom:16px}
+    .right-panel{width:100%;min-width:unset;box-shadow:none;padding:28px 20px 48px}
+    .login-box{max-width:420px;margin:0 auto;width:100%}
+}
+@media(max-width:480px){
+    .top-bar{height:auto;padding:5px 4%;flex-wrap:wrap;justify-content:center;gap:4px}
+    .top-bar-left{flex-wrap:wrap;justify-content:center;gap:5px}
+    .top-bar-sep{display:none}
+    .top-bar-item{font-size:0.62rem}
+    .top-bar-item.hide-sm{display:none}
+    .top-bar-btn{font-size:0.62rem;padding:3px 9px}
+    .left-panel{padding:16px}
+    .brand-title{font-size:1.5rem}
+    .right-panel{padding:20px 16px 40px}
+    .login-title{font-size:1.25rem}
+}
+@media(max-width:360px){
+    .top-bar{display:none}
+    .left-panel{display:none}
+    .right-panel{width:100%;min-height:100vh;padding:28px 16px 40px}
+}
+</style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+
+
+<!-- ══ SPLIT PAGE ══ -->
+<div class="page">
+
+    <!-- LEFT: Blue Network Panel -->
+    <div class="left-panel">
+        <div class="left-bg"></div>
+        <div class="left-content">
+
+            <div class="brand">
+                <div class="brand-title">Narayan <span>e-Gurukul</span></div>
+                <div class="brand-sub">Admin & Staff Portal</div>
+                <span class="brand-badge">Secure Access</span>
+            </div>
+
+            <!-- Network illustration -->
+            <div class="net-grid">
+                <div class="net-node"><i class="ri-computer-line"></i></div>
+                <div class="net-node"><i class="ri-smartphone-line"></i></div>
+                <div class="net-node"><i class="ri-wifi-line"></i></div>
+                <div class="net-node"><i class="ri-folder-line"></i></div>
+                <div class="net-node"><i class="ri-bar-chart-line"></i></div>
+                <div class="net-node" style="--tx:-50%"><i class="ri-user-settings-line"></i></div>
+                <div class="net-node"><i class="ri-cloud-line"></i></div>
+                <div class="net-node"><i class="ri-settings-3-line"></i></div>
+                <div class="net-node" style="--tx:-50%"><i class="ri-lock-password-line"></i></div>
+            </div>
+
+            <p class="admin-tagline">
+                <strong>Manage. Monitor. Lead.</strong><br>
+                Secure portal for Narayan e-Gurukul staff to manage students, content &amp; operations.
+            </p>
+
+        </div>
+    </div>
+
+    <!-- RIGHT: Login Form -->
+    <div class="right-panel">
+        <div class="login-box">
+
+            <a href="index.html" class="back-link">
+                <i class="ri-arrow-left-line"></i> Back to Home
+            </a>
+
+            <!-- Alert bar -->
+            <div class="alert-bar">
+                <div class="alert-bell">
+                    <i class="ri-notification-3-fill"></i>
+                    <div class="alert-dot">1</div>
+                </div>
+                <span>Update Alerts</span>
+            </div>
+
+            <div class="login-title">Sign in to Admin Panel</div>
+
+            <!-- Error message -->
+            <div class="error-msg" id="errorMsg">
+                <i class="ri-error-warning-line"></i>
+                <span id="errorText">Invalid username or password.</span>
+            </div>
+
+            <form id="adminLoginForm">
+                <!-- Username -->
+                <div class="field">
+                    <div class="field-wrap">
+                        <div class="field-icon"><i class="ri-user-3-line"></i></div>
+                        <input type="text" id="usernameInput" placeholder="Username" required autocomplete="username">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="field">
+                    <div class="field-wrap">
+                        <div class="field-icon"><i class="ri-lock-password-line"></i></div>
+                        <input type="password" id="passwordInput" placeholder="Password" required autocomplete="current-password">
+                        <button type="button" class="field-eye" id="eyeBtn">
+                            <i class="ri-eye-off-line" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    LOGIN <i class="ri-login-circle-line"></i>
+                </button>
+            </form>
+
+            <div class="forgot-row">
+                <a href="forgot-password.html" class="forgot">Forgot Password?</a>
+            </div>
+
+            <!-- Help section -->
+            <div class="help-section">
+                <p>Need Help?</p>
+                <a href="tel:+919468974044"><i class="ri-phone-line"></i> +91-9468974044</a>
+                <a href="mailto:egurukulnarayan@gmail.com"><i class="ri-mail-line"></i> egurukulnarayan@gmail.com</a>
+                <a href="https://narayenegurukul.com" target="_blank"><i class="ri-global-line"></i> narayenegurukul.com</a>
+                <div class="social-row">
+                    <a href="#" class="social-icon si-fb"><i class="ri-facebook-fill"></i></a>
+                    <a href="#" class="social-icon si-li"><i class="ri-linkedin-fill"></i></a>
+                    <a href="#" class="social-icon si-ig"><i class="ri-instagram-fill"></i></a>
+                    <a href="#" class="social-icon si-yt"><i class="ri-youtube-fill"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Eye toggle
+    document.getElementById('eyeBtn').addEventListener('click', function(){
+        const p = document.getElementById('passwordInput');
+        const show = p.type === 'password';
+        p.type = show ? 'text' : 'password';
+        document.getElementById('eyeIcon').className = show ? 'ri-eye-line' : 'ri-eye-off-line';
+    });
+
+    // Admin login — hardcoded credentials (change these)
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'narayan2024';
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        const user = document.getElementById('usernameInput').value.trim();
+        const pass = document.getElementById('passwordInput').value;
+        const btn  = document.getElementById('loginBtn');
+        const err  = document.getElementById('errorMsg');
+
+        err.classList.remove('show');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="ri-loader-4-line"></i> Signing in...';
+
+        setTimeout(() => {
+            if(user === ADMIN_USER && pass === ADMIN_PASS){
+                btn.innerHTML = '<i class="ri-checkbox-circle-fill"></i> Access Granted!';
+                btn.style.background = '#10b981';
+                // Save session
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                setTimeout(() => window.location.href = 'admin-dashboard.html', 1000);
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = 'LOGIN <i class="ri-login-circle-line"></i>';
+                document.getElementById('errorText').textContent = 'Invalid username or password. Please try again.';
+                err.classList.add('show');
+                // Shake effect
+                document.querySelector('.login-box').style.animation = 'shake .4s ease';
+                setTimeout(() => document.querySelector('.login-box').style.animation = '', 400);
+            }
+        }, 900);
+    });
+</script>
+<style>
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+</style>
+<script src="level-selector.js"></script>
+</body>
+</html>

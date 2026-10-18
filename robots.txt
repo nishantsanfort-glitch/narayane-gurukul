@@ -1,0 +1,29 @@
+# Narayan e-Gurukul — robots.txt
+# https://narayane-gurukul.in
+
+User-agent: *
+Allow: /
+
+# Block private/backend paths
+Disallow: /backend/
+Disallow: /backend/data/
+Disallow: /pages/admin.html
+Disallow: /pages/dashboard.html
+Disallow: /pages/forgot-password.html
+
+# Allow all crawlers on public pages
+Allow: /pages/btech-studymaterial.html
+Allow: /pages/batch.html
+Allow: /pages/btech-core.html
+Allow: /pages/cse-aids.html
+Allow: /pages/cse-aiml.html
+Allow: /pages/about.html
+Allow: /pages/founder.html
+Allow: /pages/myschool.html
+Allow: /assets/
+
+# Sitemap
+Sitemap: https://narayane-gurukul.in/sitemap.xml
+
+# Crawl delay (polite crawling)
+Crawl-delay: 2

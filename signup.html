@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Sign Up - Join Narayan e-Gurukul Free Engineering Study Portal</title>
+    <meta name="description" content="Create your free Narayan e-Gurukul account and get access to B.Tech study materials, solved PYQs, engineering notes and academic resources for all branches.">
+    <meta name="keywords" content="Narayan e-Gurukul signup, engineering portal register, free B.Tech resources account, student registration">
+    <meta name="author" content="Narayan e-Gurukul Team">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://narayenegurukul.com/signup.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://narayenegurukul.com/signup.html">
+    <meta property="og:title" content="Sign Up - Narayan e-Gurukul">
+    <meta property="og:description" content="Join Narayan e-Gurukul for free access to B.Tech notes, PYQs, and engineering resources.">
+    <meta property="og:site_name" content="Narayan e-Gurukul">
+    <meta property="og:locale" content="en_IN">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .auth-section {
+            min-height: calc(100vh - var(--navbar-height));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--navbar-height) + 4rem) 6% 4rem;
+        }
+
+        .auth-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-light);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .auth-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            color: var(--primary);
+        }
+
+        .auth-card p {
+            margin-bottom: 2.5rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .auth-form .form-group {
+            text-align: left;
+            margin-bottom: 1.25rem;
+        }
+
+        .auth-form input {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .auth-footer a {
+            color: var(--accent);
+            font-weight: 800;
+        }
+        
+        .social-login {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn-google {
+            background: var(--white);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .btn-google:hover {
+            background: var(--bg-alt);
+            border-color: var(--border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-google:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-google i {
+            color: #DB4437;
+            font-size: 1.25rem;
+        }
+
+        /* ── SPINNER ── */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2.5px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .auth-card h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <h1>Narayan <span>e-Gurukul</span></h1>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="btech-studymaterial.html" class="nav-cta">Study Material</a></li>
+            </ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="auth-section reveal active">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <p>Join Narayan e-Gurukul today!</p>
+
+                <form class="auth-form" id="signupForm" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="fullNameInput">Full Name</label>
+                        <input id="fullNameInput" type="text" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput">Email Address</label>
+                        <input id="emailInput" type="email" placeholder="student@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">Password</label>
+                        <input id="passwordInput" type="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div id="errorMessage" style="display:none; color:#ef4444; font-size:0.9rem; font-weight:600; margin-bottom:16px; padding:10px 14px; background:#fee2e2; border-radius:8px; border-left:4px solid #ef4444;"></div>
+
+                    <button type="submit" class="btn primary-btn" style="width: 100%; justify-content: center; margin-top: 1rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; padding: 15px 24px; font-size: 0.98rem; border-radius: 12px; box-shadow: 0 4px 18px rgba(37, 99, 235, 0.3);">
+                        Sign Up <i class="ri-user-add-line"></i>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="login.html">Login here</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+
+    <script type="text/plain" id="legacy-signup-handler">
+    const API_BASE_URL = window.API_BASE_URL || 'signup.php';
+    const PERFORMANCE_API = 'https://sheetdb.io/api/v1/olmuisnusfk7y';
+    const signupForm = document.getElementById('signupForm');
+    const errorMessage = document.getElementById('errorMessage');
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+    }
+
+    function hideError() {
+        errorMessage.style.display = 'none';
+    }
+
+    function registerUser(payload) {
+        return fetch('https://narayane-gurukul.in/signup.php', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(async (response) => {
+            const result = await response.json().catch(() => ({ message: 'Invalid server response.' }));
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Unable to save signup data.');
+            }
+
+            console.log('Success:', result);
+            return result;
+        });
+    }
+
+    signupForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        hideError();
+
+        const name = document.getElementById('fullNameInput').value.trim();
+        const email = document.getElementById('emailInput').value.trim();
+        const password = document.getElementById('passwordInput').value;
+        const submitBtn = this.querySelector('button[type="submit"]');
+
+        if (!name || !email || !password) {
+            showError('Please fill in all fields.');
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('Please enter a valid email address.');
+            return;
+        }
+
+        if (password.length < 6) {
+            showError('Password must be at least 6 characters long.');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="spinner"></div> Creating account…';
+
+        try {
+            const payload = {
+                Name: name,
+                Email: email,
+                Password: password
+            };
+
+            const result = await registerUser(payload)
+                .then((json) => {
+                    if (json && json.success === false) {
+                        throw new Error(json.message || 'Unable to save signup data.');
+                    }
+
+                    submitBtn.innerHTML = '<i class="ri-checkbox-circle-fill"></i> Account created!';
+                    this.reset();
+                    setTimeout(() => window.location.href = 'login.html', 1200);
+                    return json;
+                });
+
+            console.log('Success:', result);
+
+            try {
+                const perfResponse = await fetch(PERFORMANCE_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        data: [{
+                            Email: email,
+                            Tests_Done: 0,
+                            Avg_Score: 0,
+                            Current_Rank: 0,
+                            Study_Time: 0
+                        }]
+                    })
+                });
+
+                const perfResult = await perfResponse.json();
+                if (!perfResponse.ok || perfResult.error) {
+                    console.warn('Performance sheet registration failed:', perfResult?.error);
+                }
+            } catch (perfError) {
+                console.warn('Performance sheet registration failed:', perfError);
+            }
+        } catch (error) {
+            const message = error.message || 'Unknown error occurred.';
+            const userMessage = message.includes('Failed to fetch') || message.includes('NetworkError')
+                ? 'Signup service is unavailable right now. Please check your internet connection or try again later.'
+                : message;
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Sign Up <i class="ri-user-add-line"></i>';
+            showError('Signup failed: ' + userMessage);
+        }
+    });
+    </script>
+</body>
+</html>

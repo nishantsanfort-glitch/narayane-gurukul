@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Narayan e-Gurukul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="green-theme.css">
+    <style>
+        body { min-height: 100vh; display: flex; flex-direction: column; background: #fff !important; }
+        .contact-header { padding: 24px 6%; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; }
+        .contact-brand { color: #0f172a !important; font-size: 1.25rem; font-weight: 800; text-decoration: none; }
+        .contact-brand span { color: #2563eb; }
+        .contact-back { color: #2563eb; font-weight: 700; text-decoration: none; }
+        .contact-main { width: min(1040px, 90%); margin: auto; padding: 72px 0; }
+        .contact-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: start; }
+        .contact-main h1 { font-size: clamp(2rem, 5vw, 3.5rem); color: #0f172a; margin: 12px 0 16px; }
+        .contact-main h1 span { color: #2563eb; }
+        .contact-main p { line-height: 1.75; color: #475569; }
+        .contact-detail { display: flex; gap: 14px; align-items: flex-start; margin-top: 28px; }
+        .contact-detail i { color: #2563eb; font-size: 1.35rem; }
+        .contact-detail strong { display: block; color: #0f172a; margin-bottom: 3px; }
+        .contact-detail span { color: #475569; }
+        .contact-form { padding: 28px; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 16px 40px rgba(15,23,42,.07); }
+        .contact-form label { display: block; color: #0f172a; font-weight: 700; font-size: .85rem; margin: 0 0 7px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font: 500 .95rem 'Outfit', sans-serif; color: #0f172a; margin-bottom: 16px; }
+        .contact-form textarea { resize: vertical; }
+        .contact-form button { border: 0; cursor: pointer; }
+        @media(max-width:700px) { .contact-layout { grid-template-columns: 1fr; gap: 28px; } .contact-main { padding: 44px 0; } }
+    </style>
+</head>
+<body>
+    <header class="contact-header">
+        <a class="contact-brand" href="index.html">Narayan <span>e-Gurukul</span></a>
+        <a class="contact-back" href="index.html"><i class="ri-arrow-left-line"></i> Home</a>
+    </header>
+    <main class="contact-main">
+        <div class="contact-layout">
+            <section>
+                <span class="label label-blue">Contact</span>
+                <h1>Let us <span>help.</span></h1>
+                <p>Ask about study material, class-wise learning paths, competitions, or how to contribute to Narayan e-Gurukul.</p>
+                <div class="contact-detail"><i class="ri-mail-line"></i><div><strong>Email</strong><span>nishant.sanfort@gmail.com</span></div></div>
+                <div class="contact-detail"><i class="ri-map-pin-line"></i><div><strong>Location</strong><span>Hanumangarh, Rajasthan - 335512</span></div></div>
+            </section>
+            <form class="contact-form" action="backend.php" method="post">
+                <input type="hidden" name="form_type" value="contact">
+                <label for="contact-name">Full Name</label>
+                <input id="contact-name" name="name" type="text" placeholder="Your name" required>
+                <label for="contact-email">Email Address</label>
+                <input id="contact-email" name="email" type="email" placeholder="your@email.com" required>
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" name="message" rows="6" placeholder="How can we help?" required></textarea>
+                <button type="submit" class="btn btn-primary">Send Message <i class="ri-send-plane-line"></i></button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

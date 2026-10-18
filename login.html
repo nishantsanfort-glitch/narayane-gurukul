@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login — Narayan e-Gurukul</title>
+    <meta name="description" content="Login to Narayan e-Gurukul — free B.Tech, JEE, NEET & school competition study material.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+    font-family:'Outfit',sans-serif;
+    background:#f0f4f8;
+    color:#1e293b;
+    min-height:100vh;
+    overflow-x:hidden;
+    display:flex;flex-direction:column;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:'Outfit',sans-serif;cursor:pointer}
+
+/* ── HERO HEADER BANNER ── */
+.login-hero{
+    background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 55%,#4f46e5 100%);
+    padding:28px 24px 32px;
+    position:relative;overflow:hidden;
+    flex-shrink:0;
+}
+.login-hero::before{
+    content:'';position:absolute;
+    width:280px;height:280px;border-radius:50%;
+    background:rgba(255,255,255,.06);
+    top:-80px;right:-60px;pointer-events:none;
+}
+.login-hero::after{
+    content:'';position:absolute;
+    width:160px;height:160px;border-radius:50%;
+    background:rgba(255,255,255,.04);
+    bottom:-50px;left:30px;pointer-events:none;
+}
+/* Grid background dots */
+.login-hero-grid{
+    position:absolute;inset:0;
+    background-image:
+        radial-gradient(circle,rgba(255,255,255,.12) 1px,transparent 1px);
+    background-size:28px 28px;
+    pointer-events:none;
+}
+
+/* Brand row */
+.hero-brand{
+    display:flex;align-items:center;gap:14px;
+    justify-content:center;
+    margin-bottom:18px;
+    position:relative;z-index:1;
+}
+.hero-icon{
+    width:54px;height:54px;border-radius:14px;
+    background:rgba(255,255,255,.18);
+    border:1.5px solid rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.6rem;color:#fff;flex-shrink:0;
+    backdrop-filter:blur(8px);
+}
+.hero-name{text-align:left}
+.hero-name h1{
+    font-size:1.35rem;font-weight:900;color:#fff;
+    line-height:1.15;letter-spacing:-.3px;
+}
+.hero-name p{
+    font-size:.65rem;font-weight:700;
+    color:rgba(255,255,255,.65);
+    text-transform:uppercase;letter-spacing:2px;
+    margin-top:2px;
+}
+
+/* Stats pills row */
+.hero-pills{
+    display:flex;align-items:center;justify-content:center;
+    gap:10px;flex-wrap:wrap;
+    position:relative;z-index:1;
+}
+.hero-pill{
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:999px;
+    padding:6px 14px;
+    font-size:.72rem;font-weight:700;color:#fff;
+    display:flex;align-items:center;gap:6px;
+    backdrop-filter:blur(6px);
+}
+.hero-pill i{font-size:.8rem;opacity:.85}
+
+/* ── FORM CARD ── */
+.login-card{
+    flex:1;
+    background:#fff;
+    border-radius:0;
+    padding:0;
+    display:flex;flex-direction:column;
+}
+
+/* Back link */
+.back-row{
+    padding:18px 24px 0;
+}
+.back-link{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:.84rem;font-weight:600;color:#64748b;
+    transition:color .2s;
+}
+.back-link:hover{color:#2563eb}
+.back-link i{font-size:1rem}
+
+/* Form body */
+.form-body{
+    padding:22px 24px 32px;
+    flex:1;
+    max-width:440px;
+    width:100%;
+    margin:0 auto;
+}
+
+/* Title */
+.form-title{
+    font-size:1.7rem;font-weight:900;color:#0f172a;
+    text-align:center;margin-bottom:6px;letter-spacing:-.3px;
+}
+.form-sub{
+    font-size:.86rem;color:#64748b;text-align:center;
+    margin-bottom:28px;line-height:1.5;font-weight:500;
+}
+
+/* Field */
+.field{margin-bottom:16px}
+.field-label{
+    display:flex;align-items:center;gap:4px;
+    font-size:.72rem;font-weight:800;color:#0f172a;
+    text-transform:uppercase;letter-spacing:.7px;
+    margin-bottom:7px;
+}
+.field-label .req{color:#ef4444;font-size:.8rem}
+.field-wrap{
+    display:flex;align-items:center;
+    border:1.5px solid #e2e8f0;border-radius:12px;
+    background:#f8fafc;overflow:hidden;
+    transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.field-wrap:focus-within{
+    border-color:#2563eb;background:#fff;
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+.field-icon{
+    width:48px;height:52px;
+    display:flex;align-items:center;justify-content:center;
+    color:#94a3b8;font-size:1.1rem;
+    border-right:1.5px solid #e2e8f0;flex-shrink:0;
+    transition:color .2s;
+}
+.field-wrap:focus-within .field-icon{
+    color:#2563eb;border-right-color:#dbeafe;
+}
+.field-wrap input{
+    flex:1;padding:14px 14px;
+    border:none;outline:none;
+    font-family:'Outfit',sans-serif;
+    font-size:.92rem;color:#0f172a;background:transparent;
+}
+.field-wrap input::placeholder{color:#94a3b8;font-weight:500}
+
+/* OTP field (hidden initially) */
+.otp-field{display:none}
+.otp-note{
+    display:none;align-items:center;gap:6px;
+    font-size:.74rem;font-weight:600;color:#2563eb;
+    margin-top:8px;
+}
+.otp-note.show{display:flex}
+.otp-note i{font-size:.85rem}
+
+/* Options row */
+.options-row{
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;margin-bottom:22px;
+}
+.check-label{
+    display:flex;align-items:center;gap:8px;
+    font-size:.84rem;font-weight:600;color:#64748b;cursor:pointer;
+}
+.check-label input[type=checkbox]{
+    width:16px;height:16px;
+    accent-color:#2563eb;cursor:pointer;
+    border-radius:4px;
+}
+.forgot-link{
+    font-size:.84rem;font-weight:700;color:#2563eb;
+    transition:color .2s;
+}
+.forgot-link:hover{color:#1d4ed8;text-decoration:underline}
+
+/* Primary CTA button */
+.btn-send-otp{
+    width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;border:none;
+    padding:15px 24px;border-radius:12px;
+    font-size:.98rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    transition:all .22s;margin-bottom:14px;
+    letter-spacing:.2px;
+    box-shadow:0 4px 18px rgba(37,99,235,.3);
+}
+.btn-send-otp:hover{
+    background:linear-gradient(135deg,#1d4ed8,#1e40af);
+    transform:translateY(-1px);
+    box-shadow:0 6px 24px rgba(37,99,235,.4);
+}
+.btn-send-otp:active{transform:translateY(0);box-shadow:none}
+.btn-send-otp:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-send-otp i{font-size:1rem}
+
+/* Login button (hidden) */
+.btn-login{
+    width:100%;background:linear-gradient(135deg,#059669,#10b981);
+    color:#fff;border:none;
+    padding:15px 24px;border-radius:12px;
+    font-size:.98rem;font-weight:800;
+    display:none;align-items:center;justify-content:center;gap:9px;
+    transition:all .22s;margin-bottom:14px;
+    box-shadow:0 4px 18px rgba(16,185,129,.3);
+}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(16,185,129,.4)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Divider */
+.divider{
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:14px;
+}
+.divider::before,.divider::after{
+    content:'';flex:1;height:1px;background:#e2e8f0;
+}
+.divider span{
+    font-size:.72rem;font-weight:700;color:#94a3b8;
+    white-space:nowrap;
+}
+
+/* Google button */
+.btn-google{
+    width:100%;background:#fff;color:#1e293b;
+    border:1.5px solid #e2e8f0;border-radius:12px;
+    padding:14px 24px;
+    font-size:.92rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:11px;
+    transition:all .22s;margin-bottom:22px;
+}
+.btn-google:hover{
+    border-color:#2563eb;background:#f8fafc;
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(0,0,0,.07);
+}
+.btn-google:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.g-icon{width:20px;height:20px;flex-shrink:0}
+
+/* Signup link */
+.signup-row{
+    text-align:center;font-size:.86rem;
+    color:#64748b;font-weight:500;
+}
+.signup-row a{
+    color:#2563eb;font-weight:800;
+    transition:color .2s;
+}
+.signup-row a:hover{color:#1d4ed8;text-decoration:underline}
+
+/* OTP button styling */
+.btn-send-otp{
+    width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;border:none;
+    padding:15px 24px;border-radius:12px;
+    font-size:.98rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    transition:all .22s;
+    letter-spacing:.2px;
+    box-shadow:0 4px 18px rgba(37,99,235,.3);
+}
+.btn-send-otp:hover{
+    background:linear-gradient(135deg,#1d4ed8,#1e40af);
+    transform:translateY(-1px);
+    box-shadow:0 6px 24px rgba(37,99,235,.4);
+}
+.btn-send-otp:active{transform:translateY(0);box-shadow:none}
+.btn-send-otp:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-send-otp i{font-size:1rem}
+
+/* Tab button styling */
+.login-tab-btn{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    font-size:.9rem;
+}
+.login-tab-btn i{font-size:1.1rem}
+
+/* ── DESKTOP LAYOUT ── */
+/* On wider screens, show a split layout */
+@media(min-width:700px){
+    body{
+        background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 40%,#2563eb 100%);
+        align-items:center;justify-content:center;
+        padding:40px 20px;
+    }
+    .login-container{
+        width:100%;max-width:900px;
+        display:grid;grid-template-columns:1fr 420px;
+        border-radius:24px;overflow:hidden;
+        box-shadow:0 24px 80px rgba(0,0,0,.35);
+    }
+    .login-hero{
+        padding:48px 40px 48px;
+        display:flex;flex-direction:column;
+        justify-content:center;
+        border-radius:0;
+    }
+    .hero-brand{justify-content:flex-start;margin-bottom:28px}
+    .hero-pills{justify-content:flex-start}
+    .hero-tagline{
+        color:rgba(255,255,255,.85);
+        font-size:1.5rem;font-weight:900;
+        line-height:1.3;margin-top:28px;
+        position:relative;z-index:1;
+    }
+    .hero-tagline span{color:#93c5fd}
+    .hero-desc{
+        font-size:.88rem;color:rgba(255,255,255,.65);
+        font-weight:500;line-height:1.7;margin-top:12px;
+        position:relative;z-index:1;max-width:300px;
+    }
+    .hero-features{
+        margin-top:28px;display:flex;flex-direction:column;gap:12px;
+        position:relative;z-index:1;
+    }
+    .hero-feat{
+        display:flex;align-items:center;gap:10px;
+        font-size:.84rem;font-weight:600;color:rgba(255,255,255,.85);
+    }
+    .hero-feat i{
+        width:30px;height:30px;border-radius:8px;
+        background:rgba(255,255,255,.12);
+        display:flex;align-items:center;justify-content:center;
+        font-size:.95rem;flex-shrink:0;
+    }
+
+    .login-card{
+        border-radius:0;
+        box-shadow:none;
+        justify-content:center;
+    }
+    .back-row{padding:20px 28px 0}
+    .form-body{padding:20px 32px 36px}
+    .form-title{font-size:1.6rem;text-align:left}
+    .form-sub{text-align:left;margin-bottom:24px}
+}
+
+/* ── MOBILE ── */
+@media(max-width:699px){
+    body{background:#f0f4f8}
+    .login-container{width:100%;display:flex;flex-direction:column}
+    .login-hero{border-radius:0 0 0 0}
+    .hero-tagline,.hero-desc,.hero-features{display:none}
+    .login-card{background:#fff;flex:1}
+    .form-body{padding:20px 20px 40px}
+}
+@media(max-width:380px){
+    .hero-pills{gap:6px}
+    .hero-pill{font-size:.65rem;padding:5px 10px}
+    .hero-icon{width:46px;height:46px;font-size:1.35rem}
+    .hero-name h1{font-size:1.15rem}
+    .form-title{font-size:1.4rem}
+}
+</style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <!-- ── HERO BANNER ── -->
+    <div class="login-hero">
+        <div class="login-hero-grid"></div>
+
+        <!-- Brand -->
+        <div class="hero-brand">
+            <div class="hero-icon">
+                <i class="ri-graduation-cap-fill"></i>
+            </div>
+            <div class="hero-name">
+                <h1>Narayan e-Gurukul</h1>
+                <p>Smart Learning Platform</p>
+            </div>
+        </div>
+
+        <!-- Stats pills -->
+        <div class="hero-pills">
+            <span class="hero-pill"><i class="ri-download-line"></i> 15k+ Downloads</span>
+            <span class="hero-pill"><i class="ri-group-line"></i> 150+ Students</span>
+            <span class="hero-pill"><i class="ri-book-3-line"></i> B.Tech · JEE · NEET</span>
+        </div>
+
+        <!-- Desktop only: tagline + features -->
+        <div class="hero-tagline">
+            Learn Better.<br><span>Score Higher.</span>
+        </div>
+        <p class="hero-desc">
+            Free notes, solved PYQs, and mock tests for every student in India — 100% free, forever.
+        </p>
+        <div class="hero-features">
+            <div class="hero-feat"><i class="ri-file-text-line"></i> Hand-written B.Tech Notes</div>
+            <div class="hero-feat"><i class="ri-history-line"></i> 10+ Years Solved PYQs</div>
+            <div class="hero-feat"><i class="ri-robot-2-line"></i> AI Guru Doubt Solver</div>
+            <div class="hero-feat"><i class="ri-bar-chart-box-line"></i> Personalised Dashboard</div>
+        </div>
+    </div>
+
+    <!-- ── FORM CARD ── -->
+    <div class="login-card">
+
+        <!-- Back link -->
+        <div class="back-row">
+            <a href="index.html" class="back-link">
+                <i class="ri-arrow-left-line"></i> Back to Home
+            </a>
+        </div>
+
+        <!-- Form -->
+        <div class="form-body">
+            <div class="form-title">Welcome Back</div>
+            <div class="form-sub">Enter your credentials to access your account</div>
+
+            <!-- Login Method Toggle -->
+            <div style="display:flex; gap:10px; margin-bottom:24px; background:#f8fafc; padding:8px; border-radius:10px;">
+                <button type="button" id="passwordTabBtn" class="login-tab-btn active" style="flex:1; padding:10px; border:none; border-radius:8px; background:#2563eb; color:#fff; font-weight:600; cursor:pointer; transition:all .2s;">
+                    <i class="ri-lock-2-line"></i> Password
+                </button>
+                <button type="button" id="otpTabBtn" class="login-tab-btn" style="flex:1; padding:10px; border:none; border-radius:8px; background:transparent; color:#64748b; font-weight:600; cursor:pointer; transition:all .2s;">
+                    <i class="ri-mail-line"></i> OTP
+                </button>
+            </div>
+
+            <form id="loginForm" novalidate>
+
+                <!-- Password Login Fields -->
+                <div id="passwordSection">
+                    <div class="field" id="emailFieldWrap">
+                        <div class="field-label">Email Address <span class="req">*</span></div>
+                        <div class="field-wrap">
+                            <div class="field-icon"><i class="ri-mail-line"></i></div>
+                            <input type="email" id="emailInput" placeholder="student@example.com" autocomplete="email" required>
+                        </div>
+                    </div>
+
+                    <div class="field" id="passwordFieldWrap">
+                        <div class="field-label">Password <span class="req">*</span></div>
+                        <div class="field-wrap">
+                            <div class="field-icon"><i class="ri-lock-2-line"></i></div>
+                            <input type="password" id="passwordInput" placeholder="Enter your password" autocomplete="current-password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OTP Login Fields -->
+                <div id="otpSection" style="display:none;">
+                    <div class="field">
+                        <div class="field-label">Email Address <span class="req">*</span></div>
+                        <div class="field-wrap">
+                            <div class="field-icon"><i class="ri-mail-line"></i></div>
+                            <input type="email" id="otpEmailInput" placeholder="student@example.com" autocomplete="email">
+                        </div>
+                    </div>
+
+                    <button type="button" id="sendOtpBtn" class="btn-send-otp" style="margin-bottom:16px;">
+                        <i class="ri-mail-send-line"></i> Send OTP
+                    </button>
+
+                    <div class="field">
+                        <div class="field-label">Enter OTP <span class="req">*</span></div>
+                        <div class="field-wrap">
+                            <div class="field-icon"><i class="ri-shield-line"></i></div>
+                            <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6" inputmode="numeric">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="options-row">
+                    <label class="check-label">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <div id="errorMessage" style="display:none; color:#ef4444; font-size:0.9rem; font-weight:600; margin-bottom:16px; padding:10px 14px; background:#fee2e2; border-radius:8px; border-left:4px solid #ef4444;"></div>
+
+                <button type="submit" class="btn-login" id="loginBtn" style="display:flex;">
+                    Login to Dashboard <i class="ri-login-circle-line"></i>
+                </button>
+
+                <div class="divider"><span>OR CONTINUE WITH</span></div>
+                <button type="button" class="btn-google" id="googleSignInBtn">
+                    <svg class="g-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#4285F4" d="M21.35 12.27c0-.72-.06-1.42-.18-2.09H12v3.96h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.26Z"/>
+                        <path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.37l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.7-1.72-5.47-4.03H3.28v2.53A9.74 9.74 0 0 0 12 21.5Z"/>
+                        <path fill="#FBBC05" d="M6.53 13.57a5.85 5.85 0 0 1 0-3.14V7.9H3.28a9.5 9.5 0 0 0 0 8.2l3.25-2.53Z"/>
+                        <path fill="#EA4335" d="M12 6.4c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.48 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.72 5.4l3.25 2.53C7.3 8.12 9.46 6.4 12 6.4Z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <button type="button" id="skipLoginBtn" style="margin-top: 12px; width: 100%; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; border-radius: 10px; padding: 12px 16px; font-weight: 700; cursor: pointer; transition: all .2s;">
+                    Skip Login (Testing)
+                </button>
+
+            </form>
+
+            <div class="signup-row">
+                Don't have an account? <a href="signup.html">Sign up free</a>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /login-container -->
+
+<script>
+const SHEETDB_API = 'backend.php';
+const GETOTP_API_KEY = '3f5eac3985a0210155228ee91a461976';
+const BACKEND_API = 'backend.php'; // Local backend server
+
+const loginForm = document.getElementById('loginForm');
+const loginBtn = document.getElementById('loginBtn');
+const errorMessage = document.getElementById('errorMessage');
+const passwordTabBtn = document.getElementById('passwordTabBtn');
+const otpTabBtn = document.getElementById('otpTabBtn');
+const passwordSection = document.getElementById('passwordSection');
+const otpSection = document.getElementById('otpSection');
+const sendOtpBtn = document.getElementById('sendOtpBtn');
+const skipLoginBtn = document.getElementById('skipLoginBtn');
+
+let loginMethod = 'password'; // 'password' or 'otp'
+let otpSent = false;
+let otpRequestId = null;
+
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+}
+
+function hideError() {
+    errorMessage.style.display = 'none';
+}
+
+// Tab switching
+passwordTabBtn.addEventListener('click', function() {
+    loginMethod = 'password';
+    passwordTabBtn.style.background = '#2563eb';
+    passwordTabBtn.style.color = '#fff';
+    otpTabBtn.style.background = 'transparent';
+    otpTabBtn.style.color = '#64748b';
+    passwordSection.style.display = 'block';
+    otpSection.style.display = 'none';
+    hideError();
+});
+
+otpTabBtn.addEventListener('click', function() {
+    loginMethod = 'otp';
+    otpTabBtn.style.background = '#2563eb';
+    otpTabBtn.style.color = '#fff';
+    passwordTabBtn.style.background = 'transparent';
+    passwordTabBtn.style.color = '#64748b';
+    passwordSection.style.display = 'none';
+    otpSection.style.display = 'block';
+    hideError();
+});
+
+// Send OTP
+sendOtpBtn.addEventListener('click', async function(e) {
+    e.preventDefault();
+    hideError();
+
+    const email = document.getElementById('otpEmailInput').value.trim();
+    
+    if (!email) {
+        showError('Please enter your email address.');
+        return;
+    }
+
+    sendOtpBtn.disabled = true;
+    sendOtpBtn.innerHTML = '<div class="spinner"></div> Sending OTP…';
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'send_otp');
+        formData.append('email', email);
+
+        const response = await fetch(BACKEND_API, {
+            method: 'POST',
+            body: formData
+        });
+
+        let data;
+        try {
+            data = await response.json();
+        } catch (error) {
+            data = null;
+        }
+
+        if (!response.ok || !data?.success) {
+            throw new Error(data?.message || `HTTP Error: ${response.status}`);
+        }
+
+        if (!data.request_id) {
+            throw new Error(data.message || 'Failed to send OTP.');
+        }
+
+        otpRequestId = data.request_id;
+        otpSent = true;
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.innerHTML = '<i class="ri-checkbox-circle-fill"></i> OTP Sent!';
+        showError('');
+        errorMessage.style.color = '#10b981';
+        errorMessage.style.background = '#ecfdf5';
+        errorMessage.style.borderLeftColor = '#10b981';
+        errorMessage.textContent = 'OTP sent to your email. Check your inbox!';
+        errorMessage.style.display = 'block';
+
+        // Re-enable button after 30 seconds
+        setTimeout(() => {
+            sendOtpBtn.disabled = false;
+            sendOtpBtn.innerHTML = '<i class="ri-mail-send-line"></i> Resend OTP';
+        }, 30000);
+
+    } catch (error) {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.innerHTML = '<i class="ri-mail-send-line"></i> Send OTP';
+        console.error('OTP Send Error:', error);
+        let errorMsg = error.message || 'Could not send OTP. Please try again.';
+        if (errorMsg.includes('Failed to fetch')) {
+            errorMsg = 'Network error. Please check your connection and try again.';
+        }
+        showError(errorMsg);
+    }
+});
+
+skipLoginBtn.addEventListener('click', function () {
+    sessionStorage.setItem('userEmail', 'test-user@demo.local');
+    sessionStorage.setItem('userName', 'Test User');
+    window.location.href = 'student-dashboard.html';
+});
+
+// Form submission
+loginForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    hideError();
+
+    if (loginMethod === 'password') {
+        // Password login
+        const email = document.getElementById('emailInput').value.trim();
+        const password = document.getElementById('passwordInput').value;
+
+        if (!email || !password) {
+            showError('Please enter both email and password.');
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<div class="spinner"></div> Checking account…';
+
+        try {
+            const formData = new FormData();
+            formData.append('action', 'login_password');
+            formData.append('email', email);
+            formData.append('password', password);
+
+            const response = await fetch(SHEETDB_API, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || 'Invalid email or password.');
+            }
+
+            // Store user info in sessionStorage
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userName', data.name || 'Student');
+
+            loginBtn.innerHTML = '<div class="spinner"></div> Logging in…';
+            setTimeout(() => window.location.href = 'student-dashboard.html', 800);
+        } catch (error) {
+            showError('Login failed: ' + (error.message || 'Unable to access backend.'));
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = 'Login to Dashboard <i class="ri-login-circle-line"></i>';
+        }
+    } else {
+        // OTP login
+        const otpEmail = document.getElementById('otpEmailInput').value.trim();
+        const otp = document.getElementById('otpInput').value.trim();
+
+        if (!otp || otp.length !== 6) {
+            showError('Please enter a valid 6-digit OTP.');
+            return;
+        }
+
+        if (!otpRequestId) {
+            showError('Please send OTP first.');
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<div class="spinner"></div> Verifying OTP…';
+
+        try {
+            const formData = new FormData();
+            formData.append('action', 'verify_otp');
+            formData.append('request_id', otpRequestId);
+            formData.append('otp', otp);
+            formData.append('email', otpEmail);
+
+            const response = await fetch(BACKEND_API, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || 'Invalid OTP or request expired.');
+            }
+
+            // Store user info in sessionStorage
+            sessionStorage.setItem('userEmail', otpEmail);
+            sessionStorage.setItem('userName', data.name || 'Student');
+
+            loginBtn.innerHTML = '<div class="spinner"></div> Logging in…';
+            setTimeout(() => window.location.href = 'student-dashboard.html', 800);
+        } catch (error) {
+            let errorMsg = error.message || 'Invalid OTP or request expired.';
+            if (errorMsg.includes('Failed to fetch')) {
+                errorMsg = 'Network error. Please check your connection and try again.';
+            }
+            showError(errorMsg);
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = 'Login to Dashboard <i class="ri-login-circle-line"></i>';
+            console.error('OTP Verify Error:', error);
+        }
+    }
+});
+</script>
+
+<script type="text/plain" id="legacy-google-login-code">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { firebaseConfig } from './firebase-config.js';
+
+const googleSignInBtn = document.getElementById('googleSignInBtn');
+const googleConfigReady = firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('PASTE_') &&
+    firebaseConfig.messagingSenderId && !firebaseConfig.messagingSenderId.startsWith('PASTE_') &&
+    firebaseConfig.appId && !firebaseConfig.appId.startsWith('PASTE_');
+
+if (googleSignInBtn) {
+    googleSignInBtn.addEventListener('click', async () => {
+        const errorMessage = document.getElementById('errorMessage');
+        if (!googleConfigReady) {
+            errorMessage.textContent = 'Google sign-in is not configured yet. Add the Firebase web app keys in firebase-config.js.';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        googleSignInBtn.disabled = true;
+        googleSignInBtn.innerHTML = '<i class="ri-loader-4-line"></i> Connecting to Google...';
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const result = await signInWithPopup(auth, new GoogleAuthProvider());
+            sessionStorage.setItem('userEmail', result.user.email || 'google-user');
+            sessionStorage.setItem('userName', result.user.displayName || 'Student');
+            window.location.href = 'student-dashboard.html';
+        } catch (error) {
+            console.error('Google sign-in error:', error);
+            errorMessage.textContent = error.code === 'auth/popup-closed-by-user'
+                ? 'Google sign-in was cancelled.'
+                : 'Google sign-in could not be completed. Please try again.';
+            errorMessage.style.display = 'block';
+            googleSignInBtn.disabled = false;
+            googleSignInBtn.innerHTML = '<svg class="g-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.27c0-.72-.06-1.42-.18-2.09H12v3.96h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.26Z"/><path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.37l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.7-1.72-5.47-4.03H3.28v2.53A9.74 9.74 0 0 0 12 21.5Z"/><path fill="#FBBC05" d="M6.53 13.57a5.85 5.85 0 0 1 0-3.14V7.9H3.28a9.5 9.5 0 0 0 0 8.2l3.25-2.53Z"/><path fill="#EA4335" d="M12 6.4c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.48 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.72 5.4l3.25 2.53C7.3 8.12 9.46 6.4 12 6.4Z"/></svg> Continue with Google';
+        }
+    });
+}
+</script>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

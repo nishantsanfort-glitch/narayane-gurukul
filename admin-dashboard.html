@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Narayan e-Gurukul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .dashboard-container { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--secondary); color: white; padding: 2rem 1.5rem;
+            display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .sidebar-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 10px; }
+        .sidebar-header i { font-size: 1.5rem; color: var(--primary); }
+        .sidebar-header h2 { font-size: 1.1rem; font-weight: 800; color: #ffffff; }
+        .sidebar-header h2 span { color: var(--primary); }
+
+        .nav-menu { list-style: none; flex: 1; }
+        .nav-item { margin-bottom: 0.5rem; }
+        .nav-link {
+            display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+            color: #94a3b8; text-decoration: none; border-radius: 8px; transition: all 0.2s;
+            font-weight: 500; cursor: pointer; border: none; background: transparent; width: 100%;
+            font-family: inherit; font-size: 1rem; text-align: left;
+        }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
+        .nav-link i { font-size: 1.2rem; }
+
+        .logout-btn {
+            margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+            color: #fda4af; text-decoration: none; border-radius: 8px; transition: all 0.2s;
+            font-weight: 600; cursor: pointer; border: none; background: transparent; width: 100%;
+            font-family: inherit; font-size: 1rem;
+        }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 2rem 3rem; overflow-y: auto; position: relative; }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none; justify-content: space-between; align-items: center;
+            padding: 1rem; background: var(--white); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 900;
+        }
+        .menu-toggle { font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
+
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
+        .header h1 { font-size: 1.8rem; font-weight: 800; color: var(--secondary); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--secondary); margin-top: 0.5rem; }
+
+        /* Controls Bar */
+        .controls-bar {
+            display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+            background: var(--white); padding: 1rem; border-radius: 12px; border: 1px solid var(--border);
+        }
+        .search-wrapper { flex: 1; min-width: 250px; position: relative; }
+        .search-wrapper i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-input {
+            width: 100%; padding: 10px 12px 10px 38px; border: 1px solid var(--border);
+            border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none;
+        }
+        .search-input:focus { border-color: var(--primary); }
+
+        .filter-select {
+            padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 0.9rem; outline: none; background: var(--white); cursor: pointer;
+        }
+
+        .btn-action {
+            display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+            border-radius: 8px; border: 1px solid var(--border); background: var(--white);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;
+        }
+        .btn-action:hover { background: #f8fafc; border-color: var(--primary); color: var(--primary); }
+        .btn-export { background: var(--primary); color: white; border: none; }
+        .btn-export:hover { background: var(--primary-dark); color: white; }
+
+        /* Table */
+        .table-container { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+        .table-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .table-header h3 { font-weight: 700; font-size: 1.1rem; }
+
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 800px; }
+        th { background: #f1f5f9; padding: 1rem 1.5rem; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f8fafc; }
+
+        .badge { padding: 4px 10px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .badge-general { background: #eff6ff; color: var(--primary); }
+        .badge-newsletter { background: #ecfdf5; color: var(--success); }
+        .badge-admission { background: #fffbeb; color: #d97706; }
+
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); transition: color 0.2s; font-size: 1.2rem; }
+        .action-btn:hover { color: var(--danger); }
+
+        .empty-state { padding: 4rem; text-align: center; color: var(--text-muted); }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+
+        /* Form */
+        .form-card { background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 2rem; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem;
+        }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 2rem 1rem; align-items: center; }
+            .sidebar-header h2, .nav-link span, .logout-btn span { display: none; }
+            .nav-link, .logout-btn { justify-content: center; padding: 1rem; }
+            .main-content { padding: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+            .sidebar {
+                position: fixed; left: -260px; height: 100vh; width: 260px;
+                top: 0; box-shadow: 10px 0 20px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { left: 0; }
+            .sidebar-header h2, .nav-link span, .logout-btn span { display: block; }
+            .nav-link, .logout-btn { justify-content: flex-start; padding: 0.8rem 1rem; }
+
+            .main-content { padding: 1.5rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            .search-wrapper { min-width: 100%; }
+        }
+
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        .hidden { display: none; }
+
+    </style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="ri-graduation-cap-fill"></i>
+            <h2>Narayan <span>e-Gurukul</span></h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <button class="nav-link active" onclick="switchTab('inquiries')">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Inquiries</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="switchTab('batches')">
+                    <i class="ri-group-line"></i>
+                    <span>Manage Batches</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="ri-home-4-line"></i>
+                    <span>View Site</span>
+                </a>
+            </li>
+        </ul>
+        <button class="logout-btn" onclick="logout()">
+            <i class="ri-logout-box-r-line"></i>
+            <span>Logout</span>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-2-line"></i>
+            </div>
+            <div class="sidebar-header" style="margin-bottom:0">
+                <i class="ri-graduation-cap-fill"></i>
+                <h2 style="color:var(--secondary)">Narayan <span style="color:var(--primary)">e-Gurukul</span></h2>
+            </div>
+            <div style="width:24px"></div>
+        </div>
+
+        <!-- Tab: Inquiries -->
+        <div id="tab-inquiries">
+            <div class="header">
+                <h1>Inquiry Management</h1>
+                <div id="statusIndicator">
+                    <span class="badge badge-general" id="dbType">Loading DB...</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Inquiries</div>
+                    <div class="stat-value" id="totalCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Today's New</div>
+                    <div class="stat-value" id="todayCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">General</div>
+                    <div class="stat-value" id="generalCount">0</div>
+                </div>
+            </div>
+
+            <div class="controls-bar">
+                <div class="search-wrapper">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by name, email or phone...">
+                </div>
+                <select id="typeFilter" class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="general inquiry">General Inquiry</option>
+                    <option value="newsletter subscription">Newsletter</option>
+                    <option value="admission inquiry">Admission</option>
+                </select>
+                <button class="btn-action" onclick="fetchInquiries()">
+                    <i class="ri-refresh-line"></i> Refresh
+                </button>
+                <button class="btn-action btn-export" onclick="exportToCSV()">
+                    <i class="ri-download-line"></i> Export CSV
+                </button>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Recent Submissions</h3>
+                    <div style="font-size:0.85rem; color:var(--text-muted)" id="lastUpdated">Last updated: -</div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Message</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inquiryTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="emptyStateInquiries" class="empty-state" style="display: none;">
+                    <i class="ri-inbox-line"></i>
+                    <p>No inquiries found yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Batches -->
+        <div id="tab-batches" class="hidden">
+            <div class="header">
+                <h1>Manage Batches</h1>
+            </div>
+
+            <div class="form-card">
+                <h3>Add New Batch</h3>
+                <form id="addBatchForm" style="margin-top: 1rem;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Batch Name</label>
+                            <input type="text" id="batchName" placeholder="e.g. CSE (AIML)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Icon (RemixIcon class)</label>
+                            <input type="text" id="batchIcon" placeholder="e.g. ri-robot-2-line">
+                        </div>
+                        <div class="form-group">
+                            <label>Redirect Link</label>
+                            <input type="text" id="batchLink" placeholder="e.g. cse-aiml.html">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Description</label>
+                        <textarea id="batchDesc" rows="2" placeholder="Short description..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Create Batch</button>
+                </form>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Current Batches</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Batch Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="batchTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="emptyStateBatches" class="empty-state" style="display: none;">
+                    <i class="ri-group-line"></i>
+                    <p>No batches created yet.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Global state
+    let allInquiries = [];
+    let allBatches = [];
+
+    // Auth Check
+    if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+        window.location.href = 'admin.html';
+    }
+
+    function logout() {
+        sessionStorage.removeItem('adminLoggedIn');
+        window.location.href = 'admin.html';
+    }
+
+    function switchTab(tab) {
+        document.getElementById('tab-inquiries').classList.add('hidden');
+        document.getElementById('tab-batches').classList.add('hidden');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        event.currentTarget.classList.add('active');
+
+        if (tab === 'batches') fetchBatches();
+        else fetchInquiries();
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) toggleMobileMenu();
+    }
+
+    // Mobile Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+
+    function toggleMobileMenu() {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+    }
+
+    menuToggle.addEventListener('click', toggleMobileMenu);
+    sidebarOverlay.addEventListener('click', toggleMobileMenu);
+
+    // --- Inquiries Logic ---
+    async function fetchInquiries() {
+        try {
+            const [statusRes, inquiriesRes] = await Promise.all([
+                fetch('/api/status'),
+                fetch('/api/inquiries')
+            ]);
+            const status = await statusRes.json();
+            allInquiries = await inquiriesRes.json();
+            document.getElementById('dbType').textContent = `DB: ${status.database}`;
+            document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            filterAndRender();
+        } catch (err) { console.error(err); }
+    }
+
+    function filterAndRender() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const typeFilter = document.getElementById('typeFilter').value.toLowerCase();
+        const filteredData = allInquiries.filter(item => {
+            const matchesSearch = item.name.toLowerCase().includes(searchTerm) || (item.email && item.email.toLowerCase().includes(searchTerm));
+            const matchesType = typeFilter === 'all' || item.type.toLowerCase() === typeFilter;
+            return matchesSearch && matchesType;
+        });
+        renderInquiries(filteredData);
+    }
+
+    function renderInquiries(data) {
+        const tbody = document.getElementById('inquiryTableBody');
+        tbody.innerHTML = '';
+        if (!data.length) { document.getElementById('emptyStateInquiries').style.display = 'block'; return; }
+        document.getElementById('emptyStateInquiries').style.display = 'none';
+
+        updateStats(allInquiries);
+
+        data.forEach(item => {
+            const date = new Date(item.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+            const typeClass = item.type.toLowerCase().includes('newsletter') ? 'badge-newsletter' : 'badge-general';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${date}</td>
+                <td><span class="badge ${typeClass}">${item.type}</span></td>
+                <td>${item.name}</td>
+                <td>${item.email || '-'}</td>
+                <td>${item.message || '-'}</td>
+                <td><button class="action-btn" onclick="deleteInquiry(${item.id})"><i class="ri-delete-bin-line"></i></button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function updateStats(data) {
+        document.getElementById('totalCount').textContent = data.length;
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('todayCount').textContent = data.filter(i => i.createdAt.startsWith(today)).length;
+        document.getElementById('generalCount').textContent = data.filter(i => i.type.toLowerCase().includes('general')).length;
+    }
+
+    async function deleteInquiry(id) {
+        if (confirm('Delete inquiry?')) {
+            await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+            fetchInquiries();
+        }
+    }
+
+    // --- Batches Logic ---
+    async function fetchBatches() {
+        try {
+            const res = await fetch('/api/batches');
+            allBatches = await res.json();
+            renderBatches();
+        } catch (err) { console.error(err); }
+    }
+
+    function renderBatches() {
+        const tbody = document.getElementById('batchTableBody');
+        tbody.innerHTML = '';
+        if (!allBatches.length) { document.getElementById('emptyStateBatches').style.display = 'block'; return; }
+        document.getElementById('emptyStateBatches').style.display = 'none';
+
+        allBatches.forEach(b => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><i class="${b.icon}" style="font-size: 1.5rem; color: var(--primary)"></i></td>
+                <td style="font-weight: 600">${b.name}</td>
+                <td>${b.description}</td>
+                <td><a href="${b.link}" target="_blank" style="color: var(--primary)">${b.link}</a></td>
+                <td><button class="action-btn" onclick="deleteBatch(${b.id})"><i class="ri-delete-bin-line"></i></button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    document.getElementById('addBatchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            name: document.getElementById('batchName').value,
+            icon: document.getElementById('batchIcon').value,
+            link: document.getElementById('batchLink').value,
+            description: document.getElementById('batchDesc').value
+        };
+        const res = await fetch('/api/batches', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (res.ok) {
+            document.getElementById('addBatchForm').reset();
+            fetchBatches();
+        }
+    });
+
+    async function deleteBatch(id) {
+        if (confirm('Delete this batch?')) {
+            await fetch(`/api/batches/${id}`, { method: 'DELETE' });
+            fetchBatches();
+        }
+    }
+
+    function exportToCSV() {
+        if (allInquiries.length === 0) return alert('No data to export');
+        const headers = ['Date', 'Type', 'Name', 'Email', 'Phone', 'Message'];
+        const csvRows = [headers.join(',')];
+        allInquiries.forEach(item => {
+            csvRows.push([new Date(item.createdAt).toLocaleString(), item.type, item.name, item.email||'', item.phone||'', (item.message||'').replace(/,/g, ' ')].join(','));
+        });
+        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', `inquiries_${new Date().toISOString().split('T')[0]}.csv`);
+        a.click();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', filterAndRender);
+    document.getElementById('typeFilter').addEventListener('change', filterAndRender);
+
+    // Initial load
+    fetchInquiries();
+</script>
+
+<script src="level-selector.js"></script>
+</body>
+</html>

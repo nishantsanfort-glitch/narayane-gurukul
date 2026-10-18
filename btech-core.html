@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.Tech Core Details | Narayan e-Gurukul</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .course-detail-hero {
+            padding: calc(var(--navbar-height) + 4rem) 6% 6rem;
+            text-align: center;
+            background: var(--bg-alt);
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .course-detail-content {
+            max-width: 800px;
+            width: 100%;
+            background: var(--white);
+            padding: 4rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        .course-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        @media (max-width: 768px) {
+            .course-detail-content {
+                padding: 2.5rem 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <h1>Narayan <span>e-Gurukul</span></h1>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="batch.html">Our Batch</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="btech-studymaterial.html" class="nav-cta active">Study Material</a></li>
+            </ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="course-detail-hero">
+            <div class="course-detail-content reveal active">
+                <i class="ri-instance-line course-icon"></i><br>
+                <span class="badge" style="background: var(--accent); color: white; text-transform: uppercase; margin-bottom: 1rem; display: inline-block;">Launching 25 June</span>
+                <h2>B.Tech Core <br><span>Detailed Resources</span></h2>
+                <p style="font-size: 1.15rem; color: var(--text-muted); margin: 1.5rem 0 2rem; line-height: 1.6;">Our complete repository of foundational resources for first-year engineering disciplines is currently being finalized. Check back on 25 June to access your 1st Year Notes, Solved PYQs, and Core E-Books.</p>
+                
+                <div class="course-modules" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; text-align: left;">
+                    <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: var(--transition);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <i class="ri-function-line" style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.8rem; display: inline-block;"></i>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-main); font-size: 1.1rem;">Engineering Mathematics</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.5;">Calculus, Matrices, and Differential Equations</p>
+                    </div>
+                    <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: var(--transition);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <i class="ri-lightbulb-flash-line" style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.8rem; display: inline-block;"></i>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-main); font-size: 1.1rem;">Engineering Physics</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.5;">Optics, Quantum Mechanics, and Electromagnetism</p>
+                    </div>
+                    <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: var(--transition);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <i class="ri-macbook-line" style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.8rem; display: inline-block;"></i>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-main); font-size: 1.1rem;">Programming in C</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.5;">Problem Solving, Loops, Arrays, and Pointers</p>
+                    </div>
+                    <div style="background: var(--bg-alt); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: var(--transition);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <i class="ri-flashlight-line" style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.8rem; display: inline-block;"></i>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-main); font-size: 1.1rem;">Basic Electrical</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.5;">DC Circuits, AC Fundamentals, and Transformers</p>
+                    </div>
+                </div>
+
+                <a href="btech-studymaterial.html" class="btn secondary-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;"><i class="ri-arrow-left-line"></i> Back to Courses</a>
+            </div>
+        </section>
+    </main>
+
+
+    <script type="module" src="script.js"></script>
+    <script src="level-selector.js"></script>
+</body>
+</html>

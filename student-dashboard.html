@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Narayan e-Gurukul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #2563eb;
+            --warning: #0f172a;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .dashboard-container { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width); background: linear-gradient(180deg, #1e3a8a 0%, #0f1f4d 100%); color: white; padding: 2rem 1.5rem;
+            display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .sidebar-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 10px; }
+        .sidebar-header a { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+        .sidebar-header i { font-size: 1.5rem; color: var(--primary); }
+        .sidebar-header h2 { font-size: 1.1rem; font-weight: 800; color: #ffffff; }
+        .sidebar-header h2 span { color: var(--primary); }
+
+        .nav-menu { list-style: none; flex: 1; }
+        .nav-item { margin-bottom: 0.5rem; }
+        .nav-link {
+            display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+            color: #94a3b8; text-decoration: none; border-radius: 8px; transition: all 0.2s;
+            font-weight: 500; cursor: pointer; border: none; background: transparent; width: 100%;
+            font-family: inherit; font-size: 1rem; text-align: left;
+        }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.18); color: white; }
+        .nav-link i { font-size: 1.2rem; }
+
+        .logout-btn {
+            margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+            color: #fda4af; text-decoration: none; border-radius: 8px; transition: all 0.2s;
+            font-weight: 600; cursor: pointer; border: none; background: transparent; width: 100%;
+            font-family: inherit; font-size: 1rem;
+        }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 2rem 3rem; overflow-y: auto; position: relative; background: var(--bg); }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none; justify-content: space-between; align-items: center;
+            padding: 1rem; background: var(--white); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 900;
+        }
+        .menu-toggle { font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
+
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* Grid Layouts */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .icon-blue { background: #eff6ff; color: var(--primary); }
+        .icon-green { background: #eff6ff; color: var(--success); }
+        .icon-amber { background: #f1f5f9; color: var(--warning); }
+
+        .stat-details h3 { font-size: 1.5rem; font-weight: 800; color: var(--secondary); line-height: 1.2; }
+        .stat-details p { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: var(--primary);
+            border-radius: 20px; padding: 2.5rem; color: white; margin-bottom: 2.5rem;
+            position: relative; overflow: hidden;
+        }
+        .welcome-banner h1 { font-size: 2rem; margin-bottom: 0.5rem; color: white; }
+        .welcome-banner p { color: rgba(255,255,255,0.8); max-width: 500px; }
+        .welcome-banner i.bg-icon { position: absolute; right: -20px; bottom: -20px; font-size: 12rem; color: rgba(255,255,255,0.05); transform: rotate(-15deg); }
+
+        /* Content Sections */
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+
+        .dashboard-level-selector { background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .dashboard-level-selector label { color: var(--secondary); font-size: .85rem; font-weight: 700; }
+        .dashboard-level-selector select { min-width: 220px; padding: .7rem .85rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--white); color: var(--secondary); font: 600 .9rem 'Outfit', sans-serif; }
+        .dashboard-level-selector.compact { margin: 0; padding: 0; border: 0; background: transparent; }
+        .dashboard-level-selector.compact label { display: none; }
+        .dashboard-level-selector.compact select { min-width: 112px; width: 112px; padding: .55rem .6rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--white); color: var(--secondary); font-size: .78rem; }
+        .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+
+        .batch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .batch-card {
+            background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border);
+            transition: all 0.3s ease; position: relative;
+        }
+        .batch-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); border-color: var(--primary); }
+        .batch-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .batch-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .batch-link { display: flex; align-items: center; gap: 5px; color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.9rem; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 2rem 1rem; align-items: center; }
+            .sidebar-header h2, .nav-link span, .logout-btn span { display: none; }
+            .nav-link, .logout-btn { justify-content: center; padding: 1rem; }
+            .main-content { padding: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+            .sidebar {
+                position: fixed; left: -260px; height: 100vh; width: 260px;
+                top: 0; box-shadow: 10px 0 20px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { left: 0; }
+            .sidebar-header h2, .nav-link span, .logout-btn span { display: block; }
+            .nav-link, .logout-btn { justify-content: flex-start; padding: 0.8rem 1rem; }
+            .sidebar-overlay.active { display: block; }
+
+            .main-content { padding: 1.5rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .welcome-banner { padding: 1.5rem; }
+            .welcome-banner h1 { font-size: 1.5rem; }
+            .dashboard-level-selector { align-items: flex-start; flex-direction: column; }
+            .dashboard-level-selector select { width: 100%; }
+        }
+
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+        .hidden { display: none; }
+        .ai-spin { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    </style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" aria-label="Return to Narayan e-Gurukul website">
+                <i class="ri-graduation-cap-fill"></i>
+                <h2>Narayan <span>e-Gurukul</span></h2>
+            </a>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <button class="nav-link active" onclick="switchTab('home')">
+                    <i class="ri-home-heart-line"></i>
+                    <span>Overview</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="switchTab('batches')">
+                    <i class="ri-group-line"></i>
+                    <span>My Batches</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" onclick="switchTab('study-material')">
+                    <i class="ri-book-read-line"></i>
+                    <span>Study Material</span>
+                </button>
+            </li>
+        </ul>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="ri-logout-box-r-line"></i>
+            <span>Logout</span>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-2-line"></i>
+            </div>
+            <div class="sidebar-header" style="margin-bottom:0">
+                <a href="index.html" aria-label="Return to Narayan e-Gurukul website">
+                    <i class="ri-graduation-cap-fill"></i>
+                    <h2 style="color:var(--secondary)">Narayan <span style="color:var(--primary)">e-Gurukul</span></h2>
+                </a>
+            </div>
+            <div id="mobileUserAvatar" class="user-avatar" style="width:32px; height:32px; font-size:0.9rem">U</div>
+        </div>
+
+        <div id="tab-home">
+            <div class="header">
+                <div>
+                    <h1 id="welcomeTitle">Welcome Back!</h1>
+                    <p style="color:var(--text-muted)">Your academic progress at a glance.</p>
+                </div>
+                <div class="dashboard-level-selector compact">
+                    <label for="dashboard-learning-level">Choose your class or learning goal</label>
+                    <select id="dashboard-learning-level" aria-label="Choose your class or learning goal">
+                        <optgroup label="School Classes">
+                            <option value="class-5">Class 5</option>
+                            <option value="class-6" selected>Class 6</option>
+                            <option value="class-7">Class 7</option>
+                            <option value="class-8">Class 8</option>
+                            <option value="class-9">Class 9</option>
+                            <option value="class-10">Class 10</option>
+                            <option value="class-11">Class 11</option>
+                            <option value="class-12">Class 12</option>
+                        </optgroup>
+                        <optgroup label="Entrance &amp; Higher Education">
+                            <option value="jee">JEE</option>
+                            <option value="graduation">BE/B.Tech</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div style="text-align:right" class="hidden-mobile">
+                        <div style="font-weight:700; color:var(--secondary)" id="userName">Student Name</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted)" id="userEmail">student@example.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="welcome-banner">
+                <i class="ri-rocket-2-line bg-icon"></i>
+                <h1>Accelerate Your Learning</h1>
+                <p>Access hand-written notes, solved PYQs, and specialized engineering materials curated for your success.</p>
+            </div>
+
+            <div class="stats-grid stagger-reveal">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><i class="ri-file-check-line"></i></div>
+                    <div class="stat-details">
+                        <p>Tests Done</p>
+                        <h3 id="testsDone">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green"><i class="ri-line-chart-line"></i></div>
+                    <div class="stat-details">
+                        <p>Average Score</p>
+                        <h3 id="avgScore">0%</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-amber"><i class="ri-trophy-line"></i></div>
+                    <div class="stat-details">
+                        <p>Current Rank</p>
+                        <h3 id="currentRank">#0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><i class="ri-time-line"></i></div>
+                    <div class="stat-details">
+                        <p>Study Time</p>
+                        <h3 id="studyTime">0h</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <i class="ri-star-line" style="color:var(--warning)"></i> Featured Batches
+            </div>
+            <div class="batch-grid stagger-reveal" id="featuredBatches">
+                <!-- Loading State -->
+                <div style="text-align: center; grid-column: 1/-1; padding: 2rem;">
+                    <i class="ri-loader-4-line ai-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-batches" class="hidden">
+            <div class="header">
+                <h1 id="batchesHeading">Academic Batches</h1>
+                <div class="dashboard-level-selector compact">
+                    <label for="batches-learning-level">Choose your class or learning goal</label>
+                    <select id="batches-learning-level" class="dashboard-learning-level" aria-label="Choose your class or learning goal">
+                        <option value="class-5">Class 5</option><option value="class-6" selected>Class 6</option><option value="class-7">Class 7</option><option value="class-8">Class 8</option><option value="class-9">Class 9</option><option value="class-10">Class 10</option><option value="class-11">Class 11</option><option value="class-12">Class 12</option><option value="jee">JEE</option><option value="graduation">BE/B.Tech</option>
+                    </select>
+                </div>
+            </div>
+            <div class="batch-grid" id="allBatchesGrid"></div>
+        </div>
+
+        <div id="tab-study-material" class="hidden">
+            <div class="header">
+                <div>
+                    <h1>Study Material</h1>
+                    <p style="color:var(--text-muted)">Choose a batch to view your notes, practice work, and lessons.</p>
+                </div>
+                <div class="dashboard-level-selector compact">
+                    <label for="material-learning-level">Choose your class or learning goal</label>
+                    <select id="material-learning-level" class="dashboard-learning-level" aria-label="Choose your class or learning goal">
+                        <option value="class-5">Class 5</option><option value="class-6" selected>Class 6</option><option value="class-7">Class 7</option><option value="class-8">Class 8</option><option value="class-9">Class 9</option><option value="class-10">Class 10</option><option value="class-11">Class 11</option><option value="class-12">Class 12</option><option value="jee">JEE</option><option value="graduation">BE/B.Tech</option>
+                    </select>
+                </div>
+            </div>
+            <div class="material-grid" id="studyMaterialGrid">
+                <article class="batch-card">
+                    <div class="stat-icon icon-green"><i class="ri-book-open-line"></i></div>
+                    <h4>B.Tech Core</h4>
+                    <p>First-year engineering notes, practicals, and solved questions.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening B.Tech Core materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-green"><i class="ri-database-2-line"></i></div>
+                    <h4>CSE AIDS</h4>
+                    <p>AI and Data Science notes, lab manuals, and semester practice.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening CSE AIDS materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-amber"><i class="ri-robot-2-line"></i></div>
+                    <h4>CSE AIML</h4>
+                    <p>Machine Learning resources, projects, and revision material.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening CSE AIML materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-green"><i class="ri-calculator-line"></i></div>
+                    <h4>Class 8 · Scholars</h4>
+                    <p>Mathematics, Science, English, and guided practice notes.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening Class 8 materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-green"><i class="ri-flask-line"></i></div>
+                    <h4>Class 9 · Core Learning</h4>
+                    <p>Revision notes, concept lessons, and practice resources.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening Class 9 materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-amber"><i class="ri-file-list-3-line"></i></div>
+                    <h4>Class 10 · Foundation</h4>
+                    <p>Board preparation, formulas, and examination practice.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening Class 10 materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+                <article class="batch-card">
+                    <div class="stat-icon icon-green"><i class="ri-book-2-line"></i></div>
+                    <h4>First Year · Mathematics</h4>
+                    <p>Calculus, algebra, recorded lessons, and solved questions.</p>
+                    <button class="batch-link" type="button" onclick="alert('Opening First Year Mathematics materials')">Open materials <i class="ri-arrow-right-line"></i></button>
+                </article>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Dashboard Logic -->
+<script>
+    const PERFORMANCE_API = 'https://sheetdb.io/api/v1/olmuisnusfk7y';
+    const BACKEND_API = 'backend.php';
+
+    // Check if user is logged in
+    function checkAuth() {
+        // Ensure DOM is fully loaded
+        if (!document.body || !document.getElementById('userName')) {
+            console.warn('DOM not ready, retrying...');
+            setTimeout(checkAuth, 100);
+            return;
+        }
+
+        const userEmail = sessionStorage.getItem('userEmail');
+        const userName = sessionStorage.getItem('userName');
+
+        if (!userEmail) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Update UI with user info
+        const initials = (userName || 'Student').charAt(0).toUpperCase();
+        const userNameEl = document.getElementById('userName');
+        const userEmailEl = document.getElementById('userEmail');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const mobileUserAvatarEl = document.getElementById('mobileUserAvatar');
+        const welcomeTitleEl = document.getElementById('welcomeTitle');
+
+        if (userNameEl) userNameEl.textContent = userName || 'Student';
+        if (userEmailEl) userEmailEl.textContent = userEmail;
+        if (userAvatarEl) userAvatarEl.textContent = initials;
+        if (mobileUserAvatarEl) mobileUserAvatarEl.textContent = initials;
+        if (welcomeTitleEl) welcomeTitleEl.textContent = `Welcome, ${(userName || 'Student').split(' ')[0]}!`;
+
+        // Fetch performance data
+        fetchPerformanceData(userEmail);
+        setupLearningLevel();
+
+        // Refresh on a timer so sheet edits appear without re-login
+        if (!window.performanceRefreshInterval) {
+            window.performanceRefreshInterval = setInterval(() => {
+                fetchPerformanceData(userEmail);
+            }, 8000);
+        }
+
+        // Initialize Reveal Animations after data is loaded
+        setTimeout(() => {
+            const observerOptions = { threshold: 0.15 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, observerOptions);
+            document.querySelectorAll('.reveal, .stagger-reveal').forEach(el => observer.observe(el));
+        }, 500);
+    }
+
+    // Fetch performance data from SheetDB
+    async function fetchPerformanceData(email) {
+        try {
+            // Ensure DOM is ready
+            if (!document.body) {
+                console.warn('DOM not ready, retrying in 100ms...');
+                setTimeout(() => fetchPerformanceData(email), 100);
+                return;
+            }
+
+            const url = `${BACKEND_API}?action=get_performance&email=${encodeURIComponent(email)}&t=${Date.now()}`;
+            console.log('Fetching performance data from:', url);
+            
+            const response = await fetch(url, { 
+                cache: 'no-store',
+                headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' }
+            });
+            
+            const result = await response.json();
+            console.log('Performance API Response:', result);
+
+            if (result.success && result.data) {
+                const data = result.data;
+                console.log('Updating dashboard with:', data);
+                
+                const testsDoneEl = document.getElementById('testsDone');
+                const avgScoreEl = document.getElementById('avgScore');
+                const currentRankEl = document.getElementById('currentRank');
+                const studyTimeEl = document.getElementById('studyTime');
+                
+                if (testsDoneEl) testsDoneEl.textContent = data.tests_done ?? 0;
+                if (avgScoreEl) avgScoreEl.textContent = (data.avg_score ?? 0) + '%';
+                if (currentRankEl) currentRankEl.textContent = '#' + (data.current_rank ?? 0);
+                if (studyTimeEl) studyTimeEl.textContent = (data.study_time ?? 0) + 'h';
+            } else {
+                console.warn('Unexpected response format:', result);
+            }
+        } catch (error) {
+            console.error('Failed to fetch performance data:', error);
+            if (document.getElementById('testsDone')) document.getElementById('testsDone').textContent = '0';
+            if (document.getElementById('avgScore')) document.getElementById('avgScore').textContent = '0%';
+            if (document.getElementById('currentRank')) document.getElementById('currentRank').textContent = '#0';
+            if (document.getElementById('studyTime')) document.getElementById('studyTime').textContent = '0h';
+        }
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('userEmail');
+            sessionStorage.removeItem('userName');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // Sidebar & Tabs Logic
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+
+    function toggleMobileMenu() {
+        if (sidebar) sidebar.classList.toggle('active');
+        if (sidebarOverlay) sidebarOverlay.classList.toggle('active');
+    }
+
+    if (menuToggle) menuToggle.addEventListener('click', toggleMobileMenu);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleMobileMenu);
+
+    window.switchTab = (tab) => {
+        const tabHome = document.getElementById('tab-home');
+        const tabBatches = document.getElementById('tab-batches');
+        const tabStudyMaterial = document.getElementById('tab-study-material');
+        if (tabHome) tabHome.classList.add('hidden');
+        if (tabBatches) tabBatches.classList.add('hidden');
+        if (tabStudyMaterial) tabStudyMaterial.classList.add('hidden');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+        const activeTab = document.getElementById('tab-' + tab);
+        if (activeTab) activeTab.classList.remove('hidden');
+        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+
+        if (window.innerWidth <= 768) toggleMobileMenu();
+    };
+
+    function setupLearningLevel() {
+        const levelSelectors = document.querySelectorAll('.dashboard-learning-level, #dashboard-learning-level');
+        if (!levelSelectors.length) return;
+
+        const storedLevel = localStorage.getItem('narayanLearningLevel');
+        const savedLevel = storedLevel === 'neet' ? 'class-6' : (storedLevel || 'class-6');
+        if (storedLevel === 'neet') localStorage.setItem('narayanLearningLevel', savedLevel);
+        levelSelectors.forEach(levelSelector => {
+            levelSelector.value = savedLevel;
+            levelSelector.addEventListener('change', () => {
+                localStorage.setItem('narayanLearningLevel', levelSelector.value);
+                levelSelectors.forEach(otherSelector => { otherSelector.value = levelSelector.value; });
+                renderLearningPath(levelSelector.value);
+            });
+        });
+        renderLearningPath(savedLevel);
+    }
+
+    function renderLearningPath(level) {
+        const schoolClass = level.startsWith('class-') ? `Class ${level.split('-')[1]}` : level.toUpperCase();
+        const pathData = {
+            class: [
+                ['Notes & PDFs', `${schoolClass} subject notes and printable PDFs.`, 'ri-file-text-line'],
+                ['English', `Reading, grammar, writing, and vocabulary for ${schoolClass}.`, 'ri-book-2-line'],
+                ['Science', `Concept notes, diagrams, experiments, and revision sheets.`, 'ri-flask-line'],
+                ['Mathematics', `Chapter practice, solved examples, and formula cards.`, 'ri-calculator-line'],
+                ['Practice Sets', `Topic-wise questions for daily confidence-building practice.`, 'ri-pencil-ruler-2-line'],
+                ['Mock Tests', `Timed tests with answer review for ${schoolClass}.`, 'ri-timer-line'],
+                ['Olympiads', `Maths, Science, English, and school competition preparation.`, 'ri-trophy-line'],
+                ['Creative Learning', `Projects, quizzes, and activities to extend classroom learning.`, 'ri-lightbulb-line']
+            ],
+            jee: [
+                ['JEE Physics', 'Concept notes, formulas, and solved numerical questions.', 'ri-flask-line'],
+                ['JEE Chemistry', 'Organic, inorganic, and physical chemistry revision.', 'ri-test-tube-line'],
+                ['JEE Mathematics', 'Formula sheets, examples, and timed problem practice.', 'ri-function-line'],
+                ['JEE Main PYQs', 'Previous-year questions with guided solutions.', 'ri-file-list-3-line'],
+                ['JEE Advanced', 'Higher-level problems and challenge sets.', 'ri-rocket-line'],
+                ['JEE Mock Tests', 'Full-length tests with performance review.', 'ri-timer-line'],
+                ['Rank Practice', 'Topic-wise accuracy and speed improvement.', 'ri-bar-chart-line'],
+                ['Revision Library', 'Quick revision sheets for every subject.', 'ri-book-open-line']
+            ],
+            neet: [
+                ['NEET Biology', 'NCERT-focused notes, diagrams, and chapter practice.', 'ri-heart-pulse-line'],
+                ['NEET Physics', 'Formula sheets and solved numerical questions.', 'ri-flask-line'],
+                ['NEET Chemistry', 'Organic, inorganic, and physical chemistry revision.', 'ri-test-tube-line'],
+                ['NCERT Highlights', 'Fast revision support for high-yield chapters.', 'ri-book-mark-line'],
+                ['Biology MCQs', 'Chapter-wise objective questions and explanations.', 'ri-checkbox-multiple-line'],
+                ['NEET Mock Tests', 'Full-length tests with answer review.', 'ri-timer-line'],
+                ['Previous Papers', 'Solved NEET questions for exam pattern practice.', 'ri-file-list-3-line'],
+                ['Revision Library', 'Quick revision sheets for every subject.', 'ri-book-open-line']
+            ],
+            graduation: [
+                ['B.Tech Core', 'Engineering notes, practicals, and solved questions.', 'ri-graduation-cap-line'],
+                ['Computer Science', 'Programming, data structures, and algorithms.', 'ri-code-box-line'],
+                ['AI & Data Science', 'Machine learning, data, and project resources.', 'ri-database-2-line'],
+                ['Cyber Security', 'Security concepts, tools, and ethical practice.', 'ri-shield-keyhole-line'],
+                ['Projects', 'Guided academic project and implementation resources.', 'ri-lightbulb-line'],
+                ['Placement Skills', 'Aptitude, coding, resume, and interview practice.', 'ri-briefcase-line'],
+                ['Semester Practice', 'Unit-wise revision and university exam material.', 'ri-file-list-3-line'],
+                ['Career Opportunities', 'Hackathons, internships, and scholarship resources.', 'ri-rocket-line']
+            ]
+        };
+        const items = level.startsWith('class-') ? pathData.class : pathData[level] || pathData.class;
+        const batchesHeading = document.getElementById('batchesHeading');
+        const featuredGrid = document.getElementById('featuredBatches');
+        const allGrid = document.getElementById('allBatchesGrid');
+        const materialGrid = document.getElementById('studyMaterialGrid');
+        if (batchesHeading) batchesHeading.textContent = `${schoolClass} Batches`;
+
+        const batchMarkup = items.map(([name, description, icon]) => `
+            <article class="batch-card">
+                <div class="stat-icon icon-blue" style="margin-bottom:1rem"><i class="${icon}"></i></div>
+                <h4>${name}</h4>
+                <p>${description}</p>
+                <button class="batch-link" type="button" onclick="alert('Opening ${name} resources')">Explore Batch <i class="ri-arrow-right-line"></i></button>
+            </article>`).join('');
+        if (featuredGrid) featuredGrid.innerHTML = items.slice(0, 4).map(([name, description, icon]) => `
+            <article class="batch-card">
+                <div class="stat-icon icon-blue" style="margin-bottom:1rem"><i class="${icon}"></i></div>
+                <h4>${name}</h4><p>${description}</p>
+                <button class="batch-link" type="button" onclick="alert('Opening ${name} resources')">Explore Batch <i class="ri-arrow-right-line"></i></button>
+            </article>`).join('');
+        if (allGrid) allGrid.innerHTML = batchMarkup;
+        if (materialGrid) materialGrid.innerHTML = items.map(([name, description, icon]) => `
+            <article class="batch-card">
+                <div class="stat-icon icon-blue"><i class="${icon}"></i></div>
+                <h4>${name} Material</h4><p>${description}</p>
+                <button class="batch-link" type="button" onclick="alert('Opening ${name} study material')">Open material <i class="ri-arrow-right-line"></i></button>
+            </article>`).join('');
+    }
+
+    async function fetchBatches() {
+        try {
+            const res = await fetch('/api/batches');
+            if (!res.ok) throw new Error("API not available");
+            const batches = await res.json();
+            renderBatches(batches);
+        } catch (err) {
+            console.warn("Using local dummy data for batches.");
+            const dummyBatches = [
+                { name: "B.Tech Core", description: "1st Year Engineering Resources", icon: "ri-instance-line", link: "btech-core.html" },
+                { name: "CSE AIDS", description: "AI & Data Science Specialization", icon: "ri-database-2-line", link: "cse-aids.html" },
+                { name: "CSE AIML", description: "AI & Machine Learning Specialization", icon: "ri-robot-2-line", link: "cse-aiml.html" }
+            ];
+            renderBatches(dummyBatches);
+        }
+    }
+
+    function renderBatches(batches) {
+        const featuredGrid = document.getElementById('featuredBatches');
+        const allGrid = document.getElementById('allBatchesGrid');
+
+        if (!featuredGrid || !allGrid) {
+            console.warn('Batch grid elements not found');
+            return;
+        }
+
+        featuredGrid.innerHTML = '';
+        allGrid.innerHTML = '';
+
+        if (batches.length === 0) {
+            featuredGrid.innerHTML = '<p>No active batches found.</p>';
+            return;
+        }
+
+        batches.forEach((batch, index) => {
+            const html = `
+                <div class="batch-card">
+                    <div class="stat-icon icon-blue" style="margin-bottom:1rem"><i class="${batch.icon}"></i></div>
+                    <h4>${batch.name}</h4>
+                    <p>${batch.description}</p>
+                    <a href="${batch.link}" class="batch-link">Explore Batch <i class="ri-arrow-right-line"></i></a>
+                </div>
+            `;
+            if (index < 3) featuredGrid.innerHTML += html;
+            allGrid.innerHTML += html;
+        });
+    }
+
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    } else {
+        checkAuth();
+    }
+    
+    // Also listen for load event as backup
+    window.addEventListener('load', checkAuth);
+</script>
+
+<script src="level-selector.js"></script>
+</body>
+</html>

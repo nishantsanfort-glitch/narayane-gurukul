@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founders - Narayan e-Gurukul Educational Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .founder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .founder-card {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .founder-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--bg);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--accent);
+            border: 4px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        .founder-card:hover .founder-image {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .founder-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .founder-info .role {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="green-theme.css">
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <h1>Narayan <span>e-Gurukul Platform</span></h1>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="batch.html">Batch</a></li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section" style="padding-top: 10rem;">
+            <div class="section-header">
+                <span class="badge">The Visionaries</span>
+                <h2>Meet the Founders</h2>
+                <p>The minds behind Narayan e-Gurukul, dedicated to revolutionizing academic resource access for
+                    engineering students.</p>
+            </div>
+
+            <div class="founder-grid">
+                <!-- Nishant Saini -->
+                <div class="card founder-card">
+                    <div class="founder-image">
+                        <i class="ri-user-star-line"></i>
+                    </div>
+                    <div class="founder-info">
+                        <span class="role">Founder</span>
+                        <h3>Nishant Saini</h3>
+                        <p>A visionary leader passionate about bridging the gap between students and high-quality
+                            educational resources. Leading the strategic direction of e-Gurukul.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="ri-linkedin-fill"></i></a>
+                            <a href="#" class="social-link"><i class="ri-twitter-fill"></i></a>
+                            <a href="#" class="social-link"><i class="ri-github-fill"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sanidhya Jain -->
+                <div class="card founder-card">
+                    <div class="founder-image">
+                        <i class="ri-user-3-line"></i>
+                    </div>
+                    <div class="founder-info">
+                        <span class="role">Co-Founder</span>
+                        <h3>Sanidhya Jain</h3>
+                        <p>Driving innovation and curriculum excellence. Dedicated to ensuring every study material on
+                            the platform meets the highest academic standards.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="ri-linkedin-fill"></i></a>
+                            <a href="#" class="social-link"><i class="ri-instagram-line"></i></a>
+                            <a href="#" class="social-link"><i class="ri-mail-line"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION STATEMENT -->
+        <section class="section">
+            <div class="card" style="background: var(--primary); color: white; text-align: center; padding: 4rem;">
+                <h2 style="color: white; margin-bottom: 1.5rem;">"Our goal is simple: To empower every engineering
+                    student with the tools they need to succeed."</h2>
+                <p style="color: rgba(255,255,255,0.7); max-width: 800px; margin: 0 auto;">Founded in 2026, Narayan
+                    e-Gurukul was born out of a shared vision to create a decentralized, high-quality, and completely
+                    free repository for B.Tech students worldwide.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="index.html" class="footer-logo">Narayan <span>e-Gurukul Platform</span></a>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="batch.html">Batch</a>
+                <a href="index.html#about">About</a>
+                <a href="founder.html">Founders</a>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: rgba(255,255,255,0.4);">
+            &copy; 2026 Narayan e-Gurukul Educational Platform. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+    </script>
+<script src="level-selector.js"></script>
+</body>
+
+</html>

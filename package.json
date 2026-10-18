@@ -1,0 +1,19 @@
+{
+  "name": "narayan-egurukul-backend",
+  "version": "1.0.0",
+  "description": "Backend server and database engine for Narayan e-Gurukul school forms",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2"
+  },
+  "optionalDependencies": {
+    "sqlite3": "^5.1.7"
+  },
+  "author": "Narayan e-Gurukul Team",
+  "license": "ISC",
+  "keywords": [],
+  "type": "commonjs"
+}
